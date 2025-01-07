@@ -1,0 +1,26 @@
+@import url('command.css');
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.invalid-feedback {
+text-align: start;
+font-size: 12px;
+}
+
+.form-container {
+    max-width: 398px;
+}
+
+.form-title {
+    color: #052C65;
+}
+
+.form-container * {
+    font-size: 15px;
+}
+
+.fs-12 {
+    font-size: 12px;
+}

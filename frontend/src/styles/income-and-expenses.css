@@ -1,0 +1,44 @@
+.create-actions {
+    margin: 40px 0;
+}
+
+.create-actions .btn-success {
+    margin-right: 10px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.thead {
+    border-top: 1px solid #DEE2E6;
+}
+
+.thead tr th {
+    color: #052C65;
+    font-family: Roboto-Bold, sans-serif;
+    letter-spacing: 1.33px;
+    line-height: 18.75px;
+}
+
+th, td {
+    border: 1px solid #DEE2E6;
+    border-left: none;
+    border-right: none;
+    padding: 8px;
+    text-align: left;
+}
+
+tr td a:last-child {
+    margin-right: 0;
+}
+
+.text-end a svg {
+    margin-right: 0;
+}
+
+.btn-box {
+    margin-bottom: 40px;
+}
+
