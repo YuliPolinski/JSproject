@@ -1,0 +1,141 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto-Medium';
+    src: url('../fonts/Roboto-Medium.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Roboto-Bold';
+    src: url('../fonts/Roboto-Bold.ttf') format('truetype');
+}
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body a {
+    text-decoration: none;
+    color: #052C65;
+}
+
+.container-fluid {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+.row.wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100%;
+}
+
+.sidebar {
+    flex-shrink: 0;
+    height: 100%;
+    overflow: visible;
+    border-right: 1px solid #ddd;
+}
+
+.sidebar .nav {
+    padding: 60px 20px 0 20px;
+}
+
+.sidebar .amount-box, .user-info {
+    padding: 0 20px;
+}
+
+.sidebar hr {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.amount-box {
+    margin-bottom: 20px;
+}
+
+.amount-link {
+    margin-left: 10px;
+}
+
+.user-info {
+    font-size: 14px;
+    font-family: Roboto, sans-serif;
+    line-height: 24px;
+    margin-bottom: 40px;
+    margin-top: 20px;
+}
+
+.user-info svg {
+    margin-right: 0;
+}
+
+.content {
+    flex-grow: 1;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.content::-webkit-scrollbar {
+    display: none;
+}
+
+.logo {
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.nav-item .dropdown-toggle::after {
+    display: none;
+}
+
+.btn-box .btn {
+    width: 100px;
+    height: 37px;
+}
+
+a svg {
+    margin-right: 10px;
+}
+
+.row h4 {
+    margin-bottom: 20px;
+}
+
+.main-wrapper {
+    padding: 100px 0 173px 60px;
+}
+
+.nav-pills .nav-link {
+    font-size: 14px;
+    width: 178px;
+    height: 40px;
+    font-family: 'Roboto', sans-serif;
+    padding-left: 16px;
+    padding-right: 11px;
+    color: #052C65;
+}
+
+.dropdown .mt-auto svg {
+    margin-right: 16px;
+}
+
+.dropdown .mt-auto p {
+    color: #052C65;
+    font-size: 14px;
+    font-family: Roboto, sans-serif;
+}
+
+.main-wrapper h2 {
+    margin-bottom: 40px;
+    font-family: Roboto-Medium, sans-serif;
+    font-size: 40px;
+    color: #052C65;
+}
