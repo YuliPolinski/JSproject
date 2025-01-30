@@ -12,6 +12,11 @@
     src: url('../fonts/Roboto-Bold.ttf') format('truetype');
 }
 
+#content {
+    flex-grow: 1;
+    max-width: calc(100% - 220px);
+}
+
 
 html, body {
     height: 100%;
@@ -96,7 +101,7 @@ body a {
     display: none;
 }
 
-.btn-box .btn {
+.main-wrapper .btn-box .btn {
     width: 100px;
     height: 37px;
 }
