@@ -40,7 +40,7 @@ export class Signup {
                 const fullName = this.nameElement.value.trim(); // Получаем полное имя
                 const nameParts = fullName.split(/\s+/);
 
-                const signupResult = AuthServices.signup({
+                const signupResult = await AuthServices.signup({
                     name: nameParts[0] || "",
                     lastName: nameParts.slice(1).join(" ") || "",
                     email: this.emailElement.value,

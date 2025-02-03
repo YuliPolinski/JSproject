@@ -10,6 +10,7 @@ import {EditExpenses} from "./components/editing-expenses.js";
 import {IncomeExpenses} from "./components/income-expenses.js";
 import {FileUtils} from "./utils/file-utils.js";
 import {Logout} from "./components/logout.js";
+import {AuthUtils} from "./utils/auth-utils.js";
 
 export class Router {
     constructor() {
@@ -20,6 +21,7 @@ export class Router {
         this.contentEl = document.getElementById('content-block');
 
         this.initEvents();
+
         this.routes = [
             {
                 route: '/',
@@ -153,6 +155,16 @@ export class Router {
 
     async activateRoute() {
         const urlRoute = window.location.pathname;
+
+        const isAuthenticated = AuthUtils.getAuthInfo(AuthUtils.accessTokenKey);
+
+        if (!isAuthenticated && !['/login', '/signup'].includes(urlRoute)) {
+
+            history.replaceState({}, '', '/login');
+            await this.activateRoute();
+            return;
+        }
+
         const newRoute = this.routes.find(item => item.route === urlRoute);
 
         if (newRoute) {
@@ -181,6 +193,7 @@ export class Router {
 
                 if (newRoute.useLayout) {
                     const layoutHTML = await fetch(newRoute.useLayout).then(response => response.text());
+
                     if (this.contentEl) {
                         this.contentEl.innerHTML = layoutHTML;
                     } else {
@@ -206,6 +219,7 @@ export class Router {
             if (newRoute.load && typeof newRoute.load === "function") {
                 newRoute.load();
             }
+            this.activeNavItem();
         }
     }
 
@@ -214,4 +228,31 @@ export class Router {
             script.remove();
         });
     }
+
+    activeNavItem() {
+        const currentPath = window.location.pathname;
+        const navItemsEl = document.querySelectorAll('.nav-item a');
+
+        if (!navItemsEl.length) {
+            return;
+        }
+
+        navItemsEl.forEach(item => item.classList.remove('active'));
+
+        navItemsEl.forEach(item => {
+            const href = item.getAttribute('href');
+
+            if (href && href !== 'javascript:void(0)' && href === currentPath) {
+                item.classList.add('active');
+
+                const parentDropdown = item.closest('.dropdown');
+
+                if (parentDropdown) {
+                    parentDropdown.classList.add('active');
+                    parentDropdown.querySelector('.dropdown-toggle')?.classList.add('active');
+                }
+            }
+        });
+    }
+
 }

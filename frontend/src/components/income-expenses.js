@@ -1,6 +1,5 @@
 export class IncomeExpenses {
     constructor(openNewRoute) {
-
         this.openNewRoute = openNewRoute;
 
         this.dialog = document.getElementById('dialog');
@@ -11,23 +10,40 @@ export class IncomeExpenses {
         this.createIncomeButton = document.getElementById('createIncome');
         this.createExpensesButton = document.getElementById('createExpenses');
 
-        this.linkOfDelete();
-        this.addButtonListeners();
+        if (this.dialog && this.cancelDeleteButton && this.confirmDeleteButton) {
+            this.linkOfDelete();
+        } else {
+            console.error("Диалог или кнопки удаления не найдены");
+        }
+
+        if (this.createIncomeButton && this.createExpensesButton) {
+            this.addButtonListeners();
+        } else {
+            console.error("Кнопки создания не найдены!");
+        }
     }
 
     linkOfDelete() {
-        this.deleteLink.forEach(button => {
-            button.addEventListener('click', () => {
-                this.dialog.style.display = 'flex';
+        this.deleteLink.forEach(link => {
+            link.addEventListener('click', () => {
+                if (this.dialog) {
+                    this.dialog.style.display = 'flex';
+                } else {
+                    console.error("Элемент (#dialog) не найден!");
+                }
             });
         });
 
         this.cancelDeleteButton.addEventListener('click', () => {
-            this.dialog.style.display = 'none';
+            if (this.dialog) {
+                this.dialog.style.display = 'none';
+            }
         });
 
         this.confirmDeleteButton.addEventListener('click', () => {
-            this.dialog.style.display = 'none';
+            if (this.dialog) {
+                this.dialog.style.display = 'none';
+            }
         });
     }
 

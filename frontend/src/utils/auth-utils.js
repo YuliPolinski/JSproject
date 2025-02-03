@@ -13,11 +13,13 @@ export class AuthUtils {
         }
     }
 
+
     static removeAuthInfo() {
         localStorage.removeItem(this.accessTokenKey);
         localStorage.removeItem(this.refreshTokenKey);
         localStorage.removeItem(this.userInfoTokenKey);
     }
+
 
     static getAuthInfo(key = null) {
         if (key && [this.accessTokenKey, this.refreshTokenKey, this.userInfoTokenKey].includes(key)) {
@@ -31,6 +33,8 @@ export class AuthUtils {
             }
         }
     }
+
+
     static async updateRefreshToken() {
         let result = false;
         const refreshToken = this.getAuthInfo(this.refreshTokenKey);
@@ -60,3 +64,5 @@ export class AuthUtils {
         return result;
     }
 }
+
+
