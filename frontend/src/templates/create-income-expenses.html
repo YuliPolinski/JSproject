@@ -4,20 +4,34 @@
             <div class="main-wrapper">
                 <h2 class="">Создание дохода/расхода</h2>
                 <div class="container p-0">
-                    <form action="#" class="create-form d-flex flex-column">
-                        <label for="type-input"></label>
-                        <input id="type-input" type="text" placeholder="Тип...">
-                        <label for="category-input"></label>
-                        <input id="category-input" type="text" placeholder="Категория...">
-                        <label for="amount-input"></label>
-                        <input id="amount-input" type="number" placeholder="Сумма в $...">
-                        <label for="date-input"></label>
-                        <input id="date-input" type="text" placeholder="Дата...">
-                        <label for="comment-input"></label>
-                        <input id="comment-input" type="text" placeholder="Комментарий...">
-                        <div class="input-actions">
-                            <button id="createIncome" class="btn btn-success">Создать</button>
-                            <button id="cancelIncome" class="btn btn-danger">Отмена</button>
+                    <form action="#" class="create-form w-100">
+                        <div class="mb-3">
+                            <label for="type-input" class="form-label visually-hidden">Тип</label>
+                            <select id="type-input" type="text" class="form-control">
+                                <option value="income">Доход</option>
+                                <option value="expense">Расход</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category-input" class="form-label visually-hidden">Категория</label>
+                            <select id="category-input" type="text" class="form-control">
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount-input" class="form-label visually-hidden">Сумма в $</label>
+                            <input id="amount-input" type="number" class="form-control" placeholder="Сумма в $...">
+                        </div>
+                        <div class="mb-3">
+                            <label for="date-input" class="form-label visually-hidden">Дата</label>
+                            <input id="date-input" type="date" class="form-control" placeholder="Дата...">
+                        </div>
+                        <div class="mb-3">
+                            <label for="comment-input" class="form-label visually-hidden">Комментарий</label>
+                            <input id="comment-input" type="text" class="form-control" placeholder="Комментарий...">
+                        </div>
+                        <div class="d-flex gap-3">
+                            <a id="createIncome" class="btn btn-success px-4">Создать</a>
+                            <a id="cancelIncome" class="btn btn-danger px-4">Отмена</a>
                         </div>
                     </form>
                 </div>

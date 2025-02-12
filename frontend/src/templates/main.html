@@ -1,15 +1,15 @@
 <div class="container-fluid">
     <div class="row wrapper w-100">
         <div class="content p-0">
-            <div class="main-wrapper w-100">
+            <div class="main main-wrapper w-100">
                 <h2>Главная</h2>
                 <div class="btn-box d-flex align-items-center">
-                    <button class="btn btn-secondary me-3">Сегодня</button>
-                    <button class="btn btn-outline-secondary me-3">Неделя</button>
-                    <button class="btn btn-outline-secondary me-3">Месяц</button>
-                    <button class="btn btn-outline-secondary me-3">Год</button>
-                    <button class="btn btn-outline-secondary me-3">Все</button>
-                    <button class="btn btn-outline-secondary me-3">Интервал</button>
+                    <button class="btn btn-outline-secondary me-3" data-period="today">Сегодня</button>
+                    <button class="btn btn-outline-secondary me-3" data-period="week">Неделя</button>
+                    <button class="btn btn-outline-secondary me-3" data-period="month">Месяц</button>
+                    <button class="btn btn-outline-secondary me-3" data-period="year">Год</button>
+                    <button class="btn btn-outline-secondary me-3" data-period="all">Все</button>
+                    <button class="btn btn-outline-secondary me-3" data-period="interval">Интервал</button>
                     <div class="date-box d-flex">с <a href="#">Дата</a> по <a href="#">Дата</a></div>
                 </div>
                 <!-- Charts -->
@@ -32,7 +32,7 @@
                              style="max-width: 437px; max-height: 467px;">
                             <!-- Диаграмма -->
                             <div class="chart-legend" id="legend2"></div>
-                            <canvas id="myChart2" width="360" height="360"></canvas>
+                            <canvas id="myChart2" style="width: 437px; height: 467px;"></canvas>
                         </div>
                     </div>
                 </div>

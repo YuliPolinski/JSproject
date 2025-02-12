@@ -92,7 +92,7 @@ svg {
 }
 
 .amount-link {
-    margin-left: 10px;
+    margin-left: 6px;
 }
 
 .user-info {
@@ -169,4 +169,8 @@ a svg {
     font-family: Roboto-Medium, sans-serif;
     font-size: 40px;
     color: #052C65;
+}
+
+.form-control {
+    width: 397px;
 }

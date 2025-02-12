@@ -14,7 +14,7 @@
 }
 
 
-.main-wrapper h2 {
+.main.main-wrapper h2 {
     margin-bottom: 60px;
 }
 
@@ -38,6 +38,8 @@
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+    width: 437px !important;
+    height: 467px !important;
 }
 
 canvas {

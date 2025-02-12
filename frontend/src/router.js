@@ -11,6 +11,9 @@ import {IncomeExpenses} from "./components/income-expenses.js";
 import {FileUtils} from "./utils/file-utils.js";
 import {Logout} from "./components/logout.js";
 import {AuthUtils} from "./utils/auth-utils.js";
+import {CommonUtils} from "./utils/common-utils.js";
+import {CreateIncomeExpenses} from "./components/create-income-expenses";
+import {EditIncomeExpenses} from "./components/editing-income-expenses";
 
 export class Router {
     constructor() {
@@ -30,6 +33,9 @@ export class Router {
                 useLayout: '/templates/layout.html',
                 load: () => {
                     new Main(this.openNewRoute.bind(this));
+                },
+                unload: () => {
+                    window.__MainInstance = null;
                 },
                 scripts: ['chart.js', '/js/color.esm.js']
             },
@@ -118,6 +124,24 @@ export class Router {
                     new IncomeExpenses(this.openNewRoute.bind(this));
                 }
             },
+            {
+                route: '/create-income-expenses',
+                title: 'Создание дохода/расхода',
+                filePathTemplate: '/templates/create-income-expenses.html',
+                useLayout: '/templates/layout.html',
+                load: () => {
+                    new CreateIncomeExpenses(this.openNewRoute.bind(this));
+                }
+            },
+            {
+                route: '/editing-income-expenses',
+                title: 'Редактирование дохода/расхода',
+                filePathTemplate: '/templates/editing-income-expenses.html',
+                useLayout: '/templates/layout.html',
+                load: () => {
+                    new EditIncomeExpenses(this.openNewRoute.bind(this));
+                }
+            },
         ];
 
     }
@@ -165,9 +189,17 @@ export class Router {
             return;
         }
 
+        const oldRoute = this.routes.find(route => route.route === this.currentRoute);
         const newRoute = this.routes.find(item => item.route === urlRoute);
 
+        if (oldRoute && oldRoute.unload && typeof oldRoute.unload === "function") {
+            oldRoute.unload();
+        }
+
+        this.removeLoadedScripts();
+
         if (newRoute) {
+            this.currentRoute = urlRoute;
             this.removeLoadedScripts();
 
             if (newRoute.scripts && newRoute.scripts.length > 0) {
@@ -203,9 +235,11 @@ export class Router {
 
                     contentBlock = document.querySelector('#content');
                     if (!contentBlock) {
-                        console.error('Блок #content не найден внутри layout.');
                         return;
                     }
+
+                    CommonUtils.updateProfileName();
+                    await CommonUtils.getBalance()
                 }
 
                 const pageHTML = await fetch(newRoute.filePathTemplate).then(response => response.text());

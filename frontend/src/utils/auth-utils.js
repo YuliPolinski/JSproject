@@ -35,6 +35,7 @@ export class AuthUtils {
     }
 
 
+
     static async updateRefreshToken() {
         let result = false;
         const refreshToken = this.getAuthInfo(this.refreshTokenKey);

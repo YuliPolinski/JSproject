@@ -1,6 +1,7 @@
 import {ValidationUtils} from "../utils/validation-utils.js";
 import {AuthServices} from "../utils/auth-services.js";
 import {AuthUtils} from "../utils/auth-utils.js";
+import {CommonUtils} from "../utils/common-utils.js";
 
 export class Signup {
     constructor(openNewRoute) {
@@ -49,10 +50,13 @@ export class Signup {
                 });
 
                 if (signupResult) {
-                    AuthUtils.setAuthInfo(signupResult.accessToken, signupResult.refreshToken, {
-                        id: signupResult.id,
-                        name: signupResult.name
+                    AuthUtils.setAuthInfo(signupResult.tokens.accessToken, signupResult.tokens.refreshToken, {
+                        id: signupResult.user.id,
+                        name: signupResult.user.name,
+                        lastName: signupResult.user.lastName,
                     });
+
+                    CommonUtils.updateProfileName();
                     return this.openNewRoute('/');
                 }
             }

@@ -37,6 +37,7 @@ module.exports = {
     resolve: {
         alias: {
             '@kurkle/color': path.resolve(__dirname, 'node_modules/@kurkle/color/dist/color.esm.js'),
+            'chart.js': path.resolve(__dirname, 'node_modules/chart.js')
         },
         extensions: ['.js', '.json'],
     },

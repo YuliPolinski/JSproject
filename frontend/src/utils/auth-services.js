@@ -20,6 +20,7 @@ export class AuthServices {
 
     static async signup(data) {
         const result = await HttpUtils.request('/signup', 'POST', false, data);
+        console.log("Ответ от сервера (signup):", result);
 
         if (result.error || !result.response || !result.response.user ||
             !result.response.user.id || !result.response.user.name || !result.response.user.lastName) {
@@ -27,8 +28,19 @@ export class AuthServices {
             return false;
         }
 
-        return result.response;
+        const loginResult = await AuthServices.login({
+            email: data.email,
+            password: data.password
+        });
+
+        if (!loginResult) {
+            console.error("Ошибка автоматического входа после регистрации");
+            return false;
+        }
+
+        return loginResult;
     }
+
     static async logout(data) {
         await HttpUtils.request('/logout', 'POST', false, data);
     }
