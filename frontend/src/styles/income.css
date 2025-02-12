@@ -7,6 +7,10 @@
     height: 121px;
 }
 
+.row.g-3 {
+column-gap: 20px;
+}
+
 .card.shadow-sm {
     height: 100%;
     width: 352px;
@@ -59,3 +63,4 @@
     margin: 0 5px;
     line-height: 16px;
 }
+

@@ -12,6 +12,11 @@
     src: url('../fonts/Roboto-Bold.ttf') format('truetype');
 }
 
+#content {
+    flex-grow: 1;
+    max-width: calc(100% - 220px);
+}
+
 
 html, body {
     height: 100%;
@@ -36,6 +41,10 @@ body a {
     height: 100%;
 }
 
+.container {
+    margin-left: 0;
+}
+
 .sidebar {
     flex-shrink: 0;
     height: 100%;
@@ -45,6 +54,28 @@ body a {
 
 .sidebar .nav {
     padding: 60px 20px 0 20px;
+}
+
+svg {
+    fill: currentColor; /* Позволяет управлять цветом через родительский элемент */
+}
+
+.nav-item.active {
+    color: white;
+}
+
+.nav-item.active {
+    color: #052C65;
+}
+
+.nav-item.active svg {
+    fill: currentColor;
+    stroke: none;
+    stroke-width: 0;
+}
+
+.dropdown-item.active {
+    color: #ffffff;
 }
 
 .sidebar .amount-box, .user-info {
@@ -61,7 +92,7 @@ body a {
 }
 
 .amount-link {
-    margin-left: 10px;
+    margin-left: 6px;
 }
 
 .user-info {
@@ -96,7 +127,7 @@ body a {
     display: none;
 }
 
-.btn-box .btn {
+.main-wrapper .btn-box .btn {
     width: 100px;
     height: 37px;
 }
@@ -138,4 +169,8 @@ a svg {
     font-family: Roboto-Medium, sans-serif;
     font-size: 40px;
     color: #052C65;
+}
+
+.form-control {
+    width: 397px;
 }
