@@ -20,7 +20,7 @@ export class OperationService {
         return await HttpUtils.request("/operations", "POST", true, data);
     }
 
-    static async updateOperation(id, data) { 
+    static async updateOperation(id, data) {
         return await HttpUtils.request(`/operations/${id}`, "PUT", true, data);
     }
 

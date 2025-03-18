@@ -37,7 +37,7 @@ export class Router {
                 unload: () => {
                     window.__MainInstance = null;
                 },
-                scripts: ['chart.js', '/js/color.esm.js']
+                scripts: ['/js/color.esm.js']
             },
             {
                 route: '/login',
