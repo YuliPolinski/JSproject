@@ -7,8 +7,9 @@ const Dotenv = require('dotenv-webpack');
 
 
 module.exports = {
-    entry: './src/app.js',
+    entry: './src/app.ts',
     mode: 'development',
+    devtool: 'inline-source-map',
     output: {
         clean: true,
         filename: 'app.js',
@@ -26,20 +27,25 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
+            {
                 test: /\.css$/i,
                 use: [
                     MiniCssExtractPlugin.loader,
-                    'css-loader',
-                ],
-            },
-        ],
+                    'css-loader'
+                ]
+            }
+        ]
     },
     resolve: {
         alias: {
             '@kurkle/color': path.resolve(__dirname, 'node_modules/@kurkle/color/dist/color.esm.js'),
             'chart.js': path.resolve(__dirname, 'node_modules/chart.js')
         },
-        extensions: ['.js', '.json'],
+        extensions: ['.tsx', '.ts', '.js', '.json'],
     },
     plugins: [
         new Dotenv(),

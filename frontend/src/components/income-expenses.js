@@ -1,73 +1,93 @@
-import { OperationService } from "../services/operation-service";
-
-export class IncomeExpenses {
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.IncomeExpenses = void 0;
+const operation_service_1 = require("../services/operation-service");
+class IncomeExpenses {
     constructor(openNewRoute) {
+        this.selectedStartDate = null;
+        this.selectedEndDate = null;
         this.openNewRoute = openNewRoute;
         this.operationsContainer = document.getElementById("operation-container");
-
         if (!this.operationsContainer) {
             return;
         }
-
-        this.init();
+        this.init().then();
     }
-
-    async init() {
-        this.operationsContainer = document.getElementById("operation-container");
-
-        if (!this.operationsContainer) {
-            return;
-        }
-
-        this.initFilters();
-        await this.loadOperations();
-    }
-
-    async loadOperations(period, startDate = null, endDate = null) {
-        try {
-            let url = `/api/operations?period=${period}`;
-
-            if (period === "interval" && startDate && endDate) {
-                url += `&dateFrom=${startDate}&dateTo=${endDate}`;
-            }
-
-            const response = await OperationService.getOperations(period, startDate, endDate);
-
-            if (response.error) {
-                console.error(response.error);
+    init() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.operationsContainer = document.getElementById("operation-container");
+            if (!this.operationsContainer) {
                 return;
             }
-
-            this.renderOperations(response.response);
-        } catch (error) {
-            console.error(error);
-        }
+            this.initFilters();
+            yield this.loadOperations();
+        });
     }
-
+    loadOperations() {
+        return __awaiter(this, arguments, void 0, function* (period = 'all', startDate = null, endDate = null) {
+            try {
+                let url = `/api/operations?period=${period}`;
+                if (period === "interval" && startDate && endDate) {
+                    url += `&dateFrom=${startDate}&dateTo=${endDate}`;
+                }
+                const response = yield operation_service_1.OperationService.getOperations(period, startDate, endDate);
+                if (response.error) {
+                    console.error(response.error);
+                    return;
+                }
+                else if (response.response) {
+                    this.renderOperations(response.response);
+                }
+            }
+            catch (error) {
+                console.error(error);
+            }
+        });
+    }
     renderOperations(operations) {
         if (!this.operationsContainer) {
             return;
         }
-
         this.operationsContainer.innerHTML = "";
-
         operations.forEach((operation) => {
-            let savedCategory = JSON.parse(sessionStorage.getItem(`operation_category_${operation.id}`));
-
+            // let savedCategory: { title: string } | null = JSON.parse(sessionStorage.getItem(`operation_category_${operation.id}`));
+            //
+            // if (!savedCategory || !savedCategory.title) {
+            //     savedCategory = JSON.parse(sessionStorage.getItem(`category_${operation.category}`)) || { title: "Категория не указана" };
+            // }
+            let savedCategory = null;
+            const categoryData = sessionStorage.getItem(`operation_category_${operation.id}`);
+            if (categoryData) {
+                savedCategory = JSON.parse(categoryData);
+            }
             if (!savedCategory || !savedCategory.title) {
-                savedCategory = JSON.parse(sessionStorage.getItem(`category_${operation.category}`)) || { title: "Категория не указана" };
+                const fallbackCategoryData = sessionStorage.getItem(`category_${operation.category}`);
+                if (fallbackCategoryData) {
+                    savedCategory = JSON.parse(fallbackCategoryData);
+                }
+                else {
+                    savedCategory = { title: "Категория не указана" };
+                }
             }
             console.log(operation.id, savedCategory);
-
             const row = document.createElement("tr");
             row.innerHTML = `
         <td class="text-center">${operation.id}</td>
         <td class="text-center ${operation.type === "income" ? "text-success" : "text-danger"}">
             ${operation.type === "income" ? "доход" : "расход"}
         </td>
-        <td class="text-center">${savedCategory.title}</td>
+        <td class="text-center">${(savedCategory === null || savedCategory === void 0 ? void 0 : savedCategory.title) || "Категория не указана"}</td>
         <td class="text-center">${operation.amount}$</td>
-        <td class="text-center">${OperationService.formatDate(operation.date)}</td>
+        <td class="text-center">${operation_service_1.OperationService.formatDate(operation.date)}</td>
         <td class="text-center">${operation.comment || ""}</td>
         <td class="text-end">
             <a class="btn p-0 btn-sm mr-2 delete-link" data-id="${operation.id}">
@@ -85,133 +105,126 @@ export class IncomeExpenses {
                 </a>
         </td>
     `;
-            this.operationsContainer.appendChild(row);
+            if (this.operationsContainer) {
+                this.operationsContainer.appendChild(row);
+            }
         });
         this.initEventListeners();
     }
-
     initEventListeners() {
         document.querySelectorAll(".delete-link").forEach((button) => {
             button.addEventListener("click", (event) => {
                 event.preventDefault();
-
                 const operationId = button.getAttribute("data-id");
                 if (!operationId) {
                     return;
                 }
-
                 this.showDeleteDialog(operationId);
             });
         });
-
         document.querySelectorAll(".edit-link").forEach((button) => {
             button.addEventListener("click", (event) => {
                 event.preventDefault();
-
                 const operationId = button.getAttribute("data-id");
                 if (!operationId) {
                     return;
                 }
-
-                this.openNewRoute(`/editing-income-expenses?id=${operationId}`);
+                this.openNewRoute(`/editing-income-expenses?id=${operationId}`).then();
             });
         });
     }
-
     initFilters() {
         const filterButtons = document.querySelectorAll(".btn-box button");
         const dateRangeBox = document.querySelector(".date-box");
-
-        filterButtons.forEach(button => {
-            button.addEventListener("click", async () => {
-                filterButtons.forEach(btn => btn.classList.remove("active", "btn-secondary"));
+        filterButtons.forEach((button) => {
+            button.addEventListener("click", () => __awaiter(this, void 0, void 0, function* () {
+                filterButtons.forEach((btn) => btn.classList.remove("active", "btn-secondary"));
                 button.classList.add("active", "btn-secondary");
-
                 let period = button.getAttribute("data-period");
-
                 if (period === "interval") {
-                    dateRangeBox.style.display = "flex";
-                } else {
-                    dateRangeBox.style.display = "none";
-                    await this.loadOperations(period);
+                    if (dateRangeBox) {
+                        dateRangeBox.style.display = "flex";
+                    }
                 }
-            });
+                else {
+                    if (dateRangeBox) {
+                        dateRangeBox.style.display = "none";
+                    }
+                    if (period) {
+                        yield this.loadOperations(period);
+                    }
+                }
+            }));
         });
-
-        dateRangeBox.querySelectorAll("a").forEach((datePicker, index) => {
-            datePicker.addEventListener("click", () => {
-
-                const oldInput = document.getElementById("date-picker");
-                if (oldInput) oldInput.remove();
-
-                const input = document.createElement("input");
-                input.type = "date";
-                input.id = "date-picker";
-                input.style.position = "absolute";
-                input.style.left = datePicker.getBoundingClientRect().left + "px";
-                input.style.top = datePicker.getBoundingClientRect().bottom + "px";
-                input.style.zIndex = "1000";
-                input.style.border = "1px solid #ccc";
-                input.style.padding = "5px";
-                input.style.fontSize = "16px";
-                input.style.width = "150px";
-
-                document.body.appendChild(input);
-                input.focus();
-
-                input.addEventListener("change", async () => {
-                    const selectedDate = input.value;
-
-                    if (selectedDate) {
-                        datePicker.textContent = selectedDate.split("-").reverse().join(".");
-
-                        if (index === 0) {
-                            this.selectedStartDate = selectedDate;
-                        } else {
-                            this.selectedEndDate = selectedDate;
+        if (dateRangeBox) {
+            dateRangeBox.querySelectorAll("a").forEach((datePicker, index) => {
+                datePicker.addEventListener("click", () => {
+                    const oldInput = document.getElementById("date-picker");
+                    if (oldInput)
+                        oldInput.remove();
+                    const input = document.createElement("input");
+                    input.type = "date";
+                    input.id = "date-picker";
+                    input.style.position = "absolute";
+                    input.style.left = datePicker.getBoundingClientRect().left + "px";
+                    input.style.top = datePicker.getBoundingClientRect().bottom + "px";
+                    input.style.zIndex = "1000";
+                    input.style.border = "1px solid #ccc";
+                    input.style.padding = "5px";
+                    input.style.fontSize = "16px";
+                    input.style.width = "150px";
+                    document.body.appendChild(input);
+                    input.focus();
+                    input.addEventListener("change", () => __awaiter(this, void 0, void 0, function* () {
+                        const selectedDate = input.value;
+                        if (selectedDate) {
+                            datePicker.textContent = selectedDate.split("-").reverse().join(".");
+                            if (index === 0) {
+                                this.selectedStartDate = selectedDate;
+                            }
+                            else {
+                                this.selectedEndDate = selectedDate;
+                            }
+                            if (this.selectedStartDate && this.selectedEndDate) {
+                                yield this.loadOperations("interval", this.selectedStartDate, this.selectedEndDate);
+                            }
                         }
-
-                        if (this.selectedStartDate && this.selectedEndDate) {
-                            await this.loadOperations("interval", this.selectedStartDate, this.selectedEndDate);
-                        }
-                    }
-                    if (input.parentNode) {
-                        input.remove();
-                    }
-                });
-
-                input.addEventListener("blur", () => {
-                    setTimeout(() => {
                         if (input.parentNode) {
                             input.remove();
                         }
-                    }, 200);
+                    }));
+                    input.addEventListener("blur", () => {
+                        setTimeout(() => {
+                            if (input.parentNode) {
+                                input.remove();
+                            }
+                        }, 200);
+                    });
                 });
             });
-        });
+        }
     }
-
     showDeleteDialog(operationId) {
         const dialog = document.getElementById("dialog");
         const confirmDelete = document.getElementById("confirmDelete");
         const cancelDelete = document.getElementById("cancelDelete");
-
         if (!dialog || !confirmDelete || !cancelDelete) {
             return;
         }
-
         dialog.style.display = "flex";
-
         cancelDelete.onclick = () => {
             dialog.style.display = "none";
         };
-
-        confirmDelete.onclick = async () => {
-            await OperationService.deleteOperation(operationId);
-            document.querySelector(`[data-id="${operationId}"]`).closest("tr").remove();
+        confirmDelete.onclick = () => __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            yield operation_service_1.OperationService.deleteOperation(Number(operationId));
+            // document.querySelector(`[data-id="${operationId}"]`).closest("tr").remove();
+            const row = (_a = document.querySelector(`[data-id="${operationId}"]`)) === null || _a === void 0 ? void 0 : _a.closest("tr");
+            if (row) {
+                row.remove();
+            }
             dialog.style.display = "none";
-        };
+        });
     }
-
 }
-
+exports.IncomeExpenses = IncomeExpenses;

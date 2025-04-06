@@ -1,141 +1,48 @@
-import {AuthUtils} from "./auth-utils";
-import {HttpUtils} from "./http-utils";
-
-export class CommonUtils {
-
-    static initPeriodFilter(loadOperationsCallback) {
-        const filterButtons = document.querySelectorAll(".btn-box button");
-        const dateRangeBox = document.querySelector(".date-box");
-
-        if (!filterButtons.length || !dateRangeBox) {
-            console.error("❌ Ошибка: Не найдены кнопки фильтрации или контейнер диапазона дат.");
-            return;
-        }
-
-        let selectedStartDate = null;
-        let selectedEndDate = null;
-
-        // Обработчик для кнопок фильтрации
-        filterButtons.forEach(button => {
-            button.addEventListener("click", async () => {
-                filterButtons.forEach(btn => btn.classList.remove("active", "btn-secondary"));
-                button.classList.add("active", "btn-secondary");
-
-                const period = button.getAttribute("data-period");
-
-                if (period === "interval") {
-                    dateRangeBox.style.display = "flex";
-                } else {
-                    dateRangeBox.style.display = "none";
-                    await loadOperationsCallback(period);
-                }
-            });
-        });
-
-        // Обработчик для выбора дат
-        dateRangeBox.querySelectorAll("a").forEach((datePicker, index) => {
-            datePicker.addEventListener("click", () => {
-                const oldInput = document.getElementById("date-picker");
-                if (oldInput) oldInput.remove();
-
-                const input = document.createElement("input");
-                input.type = "date";
-                input.id = "date-picker";
-                input.style.position = "absolute";
-                input.style.left = datePicker.getBoundingClientRect().left + "px";
-                input.style.top = datePicker.getBoundingClientRect().bottom + "px";
-                input.style.zIndex = "1000";
-                input.style.border = "1px solid #ccc";
-                input.style.padding = "5px";
-                input.style.fontSize = "16px";
-                input.style.width = "150px";
-
-                document.body.appendChild(input);
-                input.focus();
-
-                input.addEventListener("change", async () => {
-                    const selectedDate = input.value;
-
-                    if (selectedDate) {
-                        datePicker.textContent = selectedDate.split("-").reverse().join(".");
-
-                        if (index === 0) {
-                            selectedStartDate = selectedDate;
-                        } else {
-                            selectedEndDate = selectedDate;
-                        }
-
-                        if (selectedStartDate && selectedEndDate) {
-                            await loadOperationsCallback("interval", selectedStartDate, selectedEndDate);
-                        }
-                    }
-                    if (input.parentNode) {
-                        input.remove();
-                    }
-                });
-
-                input.addEventListener("blur", () => {
-                    setTimeout(() => {
-                        if (input.parentNode) {
-                            input.remove();
-                        }
-                    }, 200);
-                });
-            });
-        });
-    }
-
-
-    static deleteClick(){
-        const dialog = document.getElementById('dialog');
-        const deleteButtons = document.querySelectorAll('.btn-delete');
-        const confirmDeleteButton = document.getElementById('confirmDelete');
-        const cancelDeleteButton = document.getElementById('cancelDelete');
-
-
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                dialog.style.display = 'flex';
-            });
-        });
-
-        cancelDeleteButton.addEventListener('click', () => {
-            dialog.style.display = 'none';
-        });
-
-        confirmDeleteButton.addEventListener('click', () => {
-            dialog.style.display = 'none';
-        });
-    }
-
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CommonUtils = void 0;
+const auth_utils_1 = require("./auth-utils");
+const http_utils_1 = require("./http-utils");
+class CommonUtils {
     static updateProfileName() {
         setTimeout(() => {
             const profileNameElement = document.getElementById('profile-name');
-            let userInfo = AuthUtils.getAuthInfo(AuthUtils.userInfoTokenKey);
-
+            // let userInfo: UserInfoType = AuthUtils.getAuthInfo(AuthUtils.userInfoTokenKey);
+            let userInfo = JSON.parse(auth_utils_1.AuthUtils.getAuthInfo(auth_utils_1.AuthUtils.userInfoTokenKey));
             if (profileNameElement && userInfo) {
-                userInfo = JSON.parse(userInfo);
+                // userInfo = JSON.parse(userInfo);
                 profileNameElement.innerText = userInfo.name + " " + userInfo.lastName;
             }
         }, 300);
     }
-
-    static async getBalance() {
-        try {
-            let response = await HttpUtils.request('/balance', 'GET', true);
-
-            if (!response || response.error || !response.response) {
+    static getBalance() {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                let response = yield http_utils_1.HttpUtils.request('/balance', 'GET', true);
+                if (!response || response.error || !response.response) {
+                    return 0;
+                }
+                let balanceElement = document.getElementById('balance');
+                let balance = (_a = response.response.balance) !== null && _a !== void 0 ? _a : 0;
+                if (balanceElement) {
+                    balanceElement.innerText = balance + " $";
+                }
+                return balance;
+            }
+            catch (error) {
                 return 0;
             }
-
-            let balanceElement = document.getElementById('balance');
-            let balance = response.response.balance ?? 0;
-            balanceElement.innerText = balance + " $";
-
-            return balance;
-        } catch (error) {
-            return 0;
-        }
+        });
     }
 }
-
+exports.CommonUtils = CommonUtils;
