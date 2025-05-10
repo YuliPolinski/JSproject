@@ -1,0 +1,49 @@
+<div class="container-fluid">
+  <div class="row wrapper w-100">
+    <div class="content p-0">
+      <div class="main-wrapper ">
+        <h2 class="mb-0">Доходы и расходы</h2>
+        <div class="create-actions">
+          <a href="/create-income-expenses" id="createIncome" class="btn btn-success">Создать доход</a>
+          <a href="/create-income-expenses" id="createExpenses" class="btn btn-danger">Создать расход</a>
+        </div>
+        <div class="btn-box d-flex align-items-center">
+          <button class="btn btn-outline-secondary me-3" data-period="today">Сегодня</button>
+          <button class="btn btn-outline-secondary me-3" data-period="week">Неделя</button>
+          <button class="btn btn-outline-secondary me-3" data-period="month">Месяц</button>
+          <button class="btn btn-outline-secondary me-3" data-period="year">Год</button>
+          <button class="btn btn-outline-secondary me-3" data-period="all">Все</button>
+          <button class="btn btn-outline-secondary me-3" data-period="interval">Интервал</button>
+          <div class="date-box d-flex">с <a href="#">Дата</a> по <a href="#">Дата</a></div>
+        </div>
+        <div class="container mt-4">
+          <div class="row g-3">
+            <table class="table">
+              <thead class="thead">
+              <tr class="text-center">
+                <th scope="col">№ операции</th>
+                <th scope="col">Тип</th>
+                <th scope="col">Категория</th>
+                <th scope="col">Сумма</th>
+                <th scope="col">Дата</th>
+                <th scope="col">Комментарий</th>
+                <th scope="col"></th>
+              </tr>
+              </thead>
+              <tbody id="operation-container"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="dialog" class="dialog text-center">
+  <div class="dialog-content">
+    <p>Вы действительно хотите удалить операцию?</p>
+    <div class="dialog-actions">
+      <button id="confirmDelete" class="btn btn-success">Да, удалить</button>
+      <button id="cancelDelete" class="btn btn-danger">Не удалять</button>
+    </div>
+  </div>
+</div>

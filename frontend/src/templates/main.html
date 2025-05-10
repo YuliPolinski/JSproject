@@ -1,0 +1,42 @@
+<div class="container-fluid">
+    <div class="row wrapper w-100">
+        <div class="content p-0">
+            <div class="main main-wrapper w-100">
+                <h2>Главная</h2>
+                <div class="btn-box d-flex align-items-center">
+                    <button class="btn btn-outline-secondary me-3" data-period="today">Сегодня</button>
+                    <button class="btn btn-outline-secondary me-3" data-period="week">Неделя</button>
+                    <button class="btn btn-outline-secondary me-3" data-period="month">Месяц</button>
+                    <button class="btn btn-outline-secondary me-3" data-period="year">Год</button>
+                    <button class="btn btn-outline-secondary me-3" data-period="all">Все</button>
+                    <button class="btn btn-outline-secondary me-3" data-period="interval">Интервал</button>
+                    <div class="date-box d-flex">с <a href="#">Дата</a> по <a href="#">Дата</a></div>
+                </div>
+                <!-- Charts -->
+                <div class="row d-flex justify-content-evenly">
+                    <div class="col-md-5 text-center chart-block">
+                        <h4>Доходы</h4>
+                        <!-- Блок для диаграммы -->
+                        <div class="chart-wrapper d-flex flex-column justify-content-start"
+                             style="width: 437px; height: 467px;">
+                            <!-- Диаграмма -->
+                            <div class="chart-legend" id="legend1"></div>
+                            <canvas id="myChart" width="360" height="360"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-5 text-center chart-block">
+                        <h4>Расходы</h4>
+                        <!-- Блок для диаграммы -->
+                        <div class="chart-wrapper d-flex flex-column justify-content-start"
+                             style="max-width: 437px; max-height: 467px;">
+                            <!-- Диаграмма -->
+                            <div class="chart-legend" id="legend2"></div>
+                            <canvas id="myChart2" style="width: 437px; height: 467px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

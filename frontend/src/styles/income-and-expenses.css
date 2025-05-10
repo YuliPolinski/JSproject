@@ -27,7 +27,7 @@ th, td {
     border-left: none;
     border-right: none;
     padding: 8px;
-    text-align: left;
+    text-align: center;
 }
 
 tr td a:last-child {
@@ -40,5 +40,9 @@ tr td a:last-child {
 
 .btn-box {
     margin-bottom: 40px;
+}
+
+.btn-box button.active {
+    color: white;
 }
 
